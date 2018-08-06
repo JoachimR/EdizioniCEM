@@ -1,0 +1,99 @@
+import de.reiss.edizioni.ApkSignatureLoader
+
+apply plugin: "com.android.application"
+apply plugin: 'io.fabric'
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "kotlin-android-extensions"
+
+android {
+
+    compileSdkVersion sdk.compile
+    buildToolsVersion versions.build_tools
+
+    defaultConfig {
+        applicationId "de.reiss.edizioni"
+
+        minSdkVersion sdk.min
+
+        targetSdkVersion sdk.target
+
+        versionCode isIdeBuild ? 1 : app_version_code
+        versionName app_version_name
+
+        vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner "de.reiss.edizioni.testutil.AppTestRunner"
+    }
+
+    signingConfigs {
+        release {
+            def propertiesFile = new File('apk_signature.properties')
+            def apkSignatureLoader = new ApkSignatureLoader()
+            def apkSignature = apkSignatureLoader.loadApkSignature(propertiesFile)
+            if (apkSignature != null) {
+                storeFile = apkSignature.storeFile
+                storePassword = apkSignature.storePassword
+                keyAlias = apkSignature.keyAlias
+                keyPassword = apkSignature.keyPassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            ext.enableCrashlytics = false
+        }
+    }
+
+    sourceSets {
+        androidTest.java.srcDirs += "src/test-common/java"
+        test.java.srcDirs += "src/test-common/java"
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+
+    implementation project(":database")
+    implementation project(":logger")
+    implementation project(":events")
+    implementation project(":downloader")
+
+    implementation "com.android.support:appcompat-v7:$versions.support_lib"
+    implementation "com.android.support:design:$versions.support_lib"
+    implementation "com.android.support:recyclerview-v7:$versions.support_lib"
+    implementation "com.android.support:cardview-v7:$versions.support_lib"
+
+    implementation "com.takisoft.fix:preference-v7:$versions.preference_fix"
+    implementation "com.takisoft.fix:preference-v7-extras:$versions.preference_fix"
+
+    implementation "android.arch.lifecycle:runtime:$versions.arch_runtime"
+    implementation "android.arch.lifecycle:extensions:$versions.arch"
+    kapt "android.arch.lifecycle:compiler:$versions.arch"
+
+    implementation "com.google.android.gms:play-services-gcm:$versions.play_service"
+
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+    compileOnly "org.glassfish:javax.annotation:$versions.glassfish"
+
+    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
+        transitive = true
+    }
+
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "com.nhaarman:mockito-kotlin-$versions.mockito_kotlin"
+    testImplementation "android.arch.core:core-testing:$versions.arch"
+}

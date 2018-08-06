@@ -1,0 +1,32 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+android {
+
+    compileSdkVersion sdk.compile
+    buildToolsVersion versions.build_tools
+
+    defaultConfig {
+        minSdkVersion sdk.min
+        targetSdkVersion sdk.target
+    }
+
+    sourceSets {
+        test.resources.srcDirs += "src/test/resources"
+    }
+
+}
+
+dependencies {
+    compile libraries.kotlin.lib
+
+    compile project(":model")
+    compile project(":logger")
+
+    api libraries.okhttp
+    api libraries.retrofit.core
+    api libraries.retrofit.moshi
+    api libraries.moshi.core
+    api libraries.moshi.adapters
+    api libraries.curlloggerinterceptor
+}
