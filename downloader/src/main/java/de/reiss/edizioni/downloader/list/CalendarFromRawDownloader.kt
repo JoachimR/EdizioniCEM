@@ -27,7 +27,7 @@ open class CalendarFromRawDownloader(private val context: Context,
     private fun getJsonFromRaw(context: Context): String {
         val writer = StringWriter()
         val buffer = CharArray(1024)
-        context.resources.openRawResource(R.raw.data2019).use { stream ->
+        context.resources.openRawResource(R.raw.data2019_3).use { stream ->
             val reader = BufferedReader(InputStreamReader(stream, "UTF-8"))
             var n = reader.read(buffer)
             while (n != -1) {

@@ -8,7 +8,7 @@ open class CalendarDownloader(private val edizioniJsonService: EdizioniJsonServi
 
     open fun downloadCalendar(year: Int): EdizioniJson? {
         try {
-            val response = edizioniJsonService.calendar().execute()
+            val response = edizioniJsonService.calendar(year).execute()
             if (response?.isSuccessful == true) {
                 return response.body()
             }

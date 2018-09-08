@@ -1,9 +1,9 @@
 package de.reiss.edizioni.architecture.di
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Rfc3339DateJsonAdapter
 import dagger.Module
 import dagger.Provides
+import de.reiss.edizioni.architecture.EdizioniCEMDateJsonAdapter
 import de.reiss.edizioni.downloader.BASE_URL
 import de.reiss.edizioni.downloader.list.EdizioniJsonService
 import okhttp3.OkHttpClient
@@ -21,7 +21,7 @@ open class RetrofitModule {
     @Provides
     @ApplicationScope
     open fun moshi(): Moshi = Moshi.Builder()
-            .add(Date::class.java, Rfc3339DateJsonAdapter())
+            .add(Date::class.java, EdizioniCEMDateJsonAdapter())
             .build()
 
     @Provides

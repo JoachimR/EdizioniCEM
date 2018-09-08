@@ -78,7 +78,7 @@
     <string name="no_notes_for_filter">Keine Notizen gefunden die den Text \'%1$s\' enthalten</string>
     <string name="edit_note">Notiz editieren</string>
     <string name="snackbar_retry">Nochmal</string>
-    <string name="cd_the_word_no_content">Kein Inhalt für dieses Datum vorhanden</string>
+    <string name="cd_daily_text_no_content">Kein Inhalt für dieses Datum vorhanden</string>
     <string name="dialog_cancel">Abbrechen</string>
     <string name="view_pager_loading_content">Lade Daten</string>
     <string name="bible_no_bibles">Es konnten keine Übersetzungen gefunden werden</string>
@@ -97,7 +97,7 @@
     <string name="note_list_title">Alle Notizen</string>
     <string name="bible_activity_title">@string/app_name</string>
     <string name="main_activity_title">@string/app_name</string>
-    <string name="the_word_change_translation">Ändere Übersetzung</string>
+    <string name="daily_text_change_translation">Ändere Übersetzung</string>
     <string name="cd_no_notes">Keine Notizen</string>
     <string name="share_dialog_title">Teilen</string>
     <string name="share_dialog_ok">Teilen</string>

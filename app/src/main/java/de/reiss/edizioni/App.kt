@@ -4,6 +4,7 @@ import android.app.Application
 import android.support.v7.preference.PreferenceManager
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.facebook.stetho.Stetho
 import de.reiss.edizioni.architecture.di.ApplicationComponent
 import de.reiss.edizioni.architecture.di.ContextModule
 import de.reiss.edizioni.architecture.di.DaggerApplicationComponent
@@ -27,6 +28,7 @@ open class App : Application() {
     }
 
     open fun initApp() {
+        Stetho.initializeWithDefaults(this);
         Fabric.with(this, Crashlytics.Builder()
                 .core(CrashlyticsCore.Builder()
                         .disabled(BuildConfig.DEBUG)

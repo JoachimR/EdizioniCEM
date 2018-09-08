@@ -29,11 +29,6 @@
         </activity>
 
         <activity
-            android:name=".bible.BibleActivity"
-            android:label="@string/bible_activity_title"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
             android:name=".main.MainActivity"
             android:label="@string/main_activity_title"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -9,22 +9,19 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.widget.EditText
 import de.reiss.edizioni.R
-import de.reiss.edizioni.model.TheWordContent
-import de.reiss.edizioni.util.contentAsString
+import de.reiss.edizioni.model.DailyText
+import de.reiss.edizioni.dailyTextToString
 
 class ShareDialog : DialogFragment() {
 
     companion object {
 
-        private val KEY_INITIAL_CONTENT = "KEY_INITIAL_CONTENT"
+        private const val KEY_INITIAL_CONTENT = "KEY_INITIAL_CONTENT"
 
         fun createInstance(context: Context,
-                           time: Long,
-                           theWordContent: TheWordContent,
-                           note: String) = ShareDialog().apply {
+                           dailyText: DailyText) = ShareDialog().apply {
             arguments = Bundle().apply {
-                putString(KEY_INITIAL_CONTENT,
-                        contentAsString(context, time, theWordContent, note))
+                putString(KEY_INITIAL_CONTENT, dailyTextToString(context, dailyText))
             }
         }
 
@@ -40,10 +37,10 @@ class ShareDialog : DialogFragment() {
                 AlertDialog.Builder(activity)
                         .setTitle(R.string.share_dialog_title)
                         .setNegativeButton(R.string.dialog_cancel, null)
-                        .setPositiveButton(R.string.share_dialog_ok, { _, _ ->
+                        .setPositiveButton(R.string.share_dialog_ok) { _, _ ->
                             startActivity(shareIntent())
                             dismiss()
-                        })
+                        }
                         .setView(createLayout(activity))
                         .create()
             }

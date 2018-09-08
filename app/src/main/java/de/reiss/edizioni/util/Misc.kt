@@ -6,8 +6,6 @@ import android.content.Context
 import android.text.Html
 import de.reiss.edizioni.App
 import de.reiss.edizioni.R
-import de.reiss.edizioni.formattedDate
-import de.reiss.edizioni.model.TheWordContent
 
 fun appVersion(context: Context): String {
     val version = context.packageManager.getPackageInfo(context.packageName, 0).versionName
@@ -21,33 +19,6 @@ fun htmlize(text: String) =
         } else {
             Html.fromHtml(text)
         }
-
-fun contentAsString(context: Context, time: Long, theWordContent: TheWordContent, note: String) =
-        StringBuilder().apply {
-            append(formattedDate(context, time))
-            append("\n\n")
-
-            if (theWordContent.intro1.isNotEmpty()) {
-                append(theWordContent.intro1)
-                append("\n\n")
-            }
-            append(theWordContent.text1)
-            append("\n")
-            append(theWordContent.ref1)
-            append("\n\n")
-
-            if (theWordContent.intro2.isNotEmpty()) {
-                append(theWordContent.intro2)
-                append("\n\n")
-            }
-            append(theWordContent.text2)
-            append("\n")
-            append(theWordContent.ref2)
-            if (note.isNotEmpty()) {
-                append("\n\n")
-                append(note)
-            }
-        }.toString()
 
 fun copyToClipboard(context: Context, text: String) {
     clipboardManager.primaryClip =

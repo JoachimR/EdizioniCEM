@@ -13,7 +13,6 @@ import de.reiss.edizioni.R
 import de.reiss.edizioni.about.AboutActivity
 import de.reiss.edizioni.architecture.AppActivity
 import de.reiss.edizioni.main.viewpager.ViewPagerFragment
-import de.reiss.edizioni.note.list.NoteListActivity
 import de.reiss.edizioni.preferences.AppPreferencesActivity
 import de.reiss.edizioni.util.extensions.findFragmentIn
 import de.reiss.edizioni.util.extensions.replaceFragmentIn
@@ -49,9 +48,6 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_all_notes -> {
-                startActivity(NoteListActivity.createIntent(this))
-            }
             R.id.nav_settings -> {
                 goToSettings()
             }

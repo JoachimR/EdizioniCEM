@@ -71,6 +71,8 @@ dependencies {
     implementation project(":events")
     implementation project(":downloader")
 
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
     implementation "com.android.support:appcompat-v7:$versions.support_lib"
     implementation "com.android.support:design:$versions.support_lib"
     implementation "com.android.support:recyclerview-v7:$versions.support_lib"

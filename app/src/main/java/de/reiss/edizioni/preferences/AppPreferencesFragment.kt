@@ -1,13 +1,11 @@
 package de.reiss.edizioni.preferences
 
 import android.os.Bundle
-import android.support.v7.preference.ListPreference
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompatDividers
 import de.reiss.edizioni.R
-import de.reiss.edizioni.model.Bible
 import de.reiss.edizioni.util.extensions.isPlayServiceAvailable
 
 
@@ -15,23 +13,8 @@ class AppPreferencesFragment : PreferenceFragmentCompatDividers() {
 
     companion object {
 
-        private const val LIST_BIBLES = "LIST_BIBLES"
+        fun newInstance() = AppPreferencesFragment()
 
-        fun newInstance(bibles: List<Bible>) =
-                AppPreferencesFragment().apply {
-                    arguments = Bundle().apply {
-                        putParcelableArrayList(LIST_BIBLES,
-                                arrayListOf<Bible>().apply { addAll(bibles) })
-                    }
-                }
-
-    }
-
-    private lateinit var bibles: List<Bible>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        bibles = arguments?.getParcelableArrayList(LIST_BIBLES) ?: arrayListOf()
     }
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
@@ -52,11 +35,6 @@ class AppPreferencesFragment : PreferenceFragmentCompatDividers() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (findPreference(getString(R.string.pref_language_key)) as ListPreference).apply {
-            entries = bibles.map { it.bibleName }.toTypedArray()
-            entryValues = bibles.map { it.key }.toTypedArray()
-        }
-
         findPreference(getString(R.string.pref_show_daily_notification_key)).apply {
             val playServiceAvailable = context.isPlayServiceAvailable()
             isVisible = playServiceAvailable

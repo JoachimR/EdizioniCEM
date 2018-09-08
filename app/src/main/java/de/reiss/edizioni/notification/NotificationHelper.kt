@@ -11,11 +11,10 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import de.reiss.edizioni.R
 import de.reiss.edizioni.SplashScreenActivity
-import de.reiss.edizioni.database.BibleItemDao
-import de.reiss.edizioni.database.TheWordItemDao
-import de.reiss.edizioni.database.converter.Converter
+import de.reiss.edizioni.database.daos.TextItemDaoFull
+import de.reiss.edizioni.dbItemToDailyText
 import de.reiss.edizioni.formattedDate
-import de.reiss.edizioni.model.TheWord
+import de.reiss.edizioni.model.DailyText
 import de.reiss.edizioni.preferences.AppPreferences
 import de.reiss.edizioni.util.extensions.withZeroDayTime
 import java.util.*
@@ -26,8 +25,7 @@ open class NotificationHelper @Inject constructor(private val context: Context,
                                                   private val notificationManager: NotificationManager,
                                                   private val executor: Executor,
                                                   private val appPreferences: AppPreferences,
-                                                  private val theWordItemDao: TheWordItemDao,
-                                                  private val bibleItemDao: BibleItemDao) {
+                                                  private val textItemDaoFull: TextItemDaoFull) {
 
     companion object {
 
@@ -50,24 +48,22 @@ open class NotificationHelper @Inject constructor(private val context: Context,
         }
 
         executor.execute {
-
-//            val item = theWordItemDao.byDate(bibleItem.id, Date().withZeroDayTime())
-//            Converter.theWordItemToTheWord(bibleItem.bible, item)?.let {
-//                showNotification(it)
-//            }
+            dbItemToDailyText(textItemDaoFull.forDate(Date().withZeroDayTime()))?.let {
+                showNotification(it)
+            }
         }
     }
 
-    private fun showNotification(theWord: TheWord) {
+    private fun showNotification(theWord: DailyText) {
         notificationManager.notify(NOTIFICATION_ID, createNotification(context, theWord))
     }
 
-    private fun createNotification(context: Context, theWord: TheWord) =
+    private fun createNotification(context: Context, dailyText: DailyText) =
             NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_daily_word)
-                    .setContentTitle(formattedDate(context, theWord.date.time))
+                    .setContentTitle(formattedDate(context, dailyText.date.time))
                     .setStyle(NotificationCompat.BigTextStyle()
-                            .bigText(wordToText(theWord)))
+                            .bigText(bibleText(dailyText)))
                     .setLargeIcon(BitmapFactory.decodeResource(
                             context.resources, R.mipmap.ic_launcher))
                     .setAutoCancel(true)
@@ -82,15 +78,11 @@ open class NotificationHelper @Inject constructor(private val context: Context,
 
     private fun createUniqueRequestCode() = Random().nextInt(100)
 
-    private fun wordToText(theWord: TheWord) =
+    private fun bibleText(dailyText: DailyText) =
             StringBuilder().apply {
-                append(theWord.content.text1)
-                append(" ")
-                append(theWord.content.ref1)
+                append(dailyText.verse)
                 append("\n")
-                append(theWord.content.text2)
-                append(" ")
-                append(theWord.content.ref2)
+                append(dailyText.bibleRef)
             }.toString()
 
     @RequiresApi(Build.VERSION_CODES.O)

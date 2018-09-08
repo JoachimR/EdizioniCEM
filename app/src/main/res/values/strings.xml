@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="app_name">Edizioni CEM</string>
-    <string name="info_general">The app shows The Word created by </string>
+    <string name="info_general">The app shows the content created by </string>
     <string name="source_code_prefix">Source code:</string>
     <string name="info_participate">If you want to participate in creating new content, please visit:</string>
     <string name="pref_screen_settings_title">Settings</string>
@@ -76,11 +76,11 @@
     <string name="notes_export_success">Export to %1$s/%2$s finished</string>
     <string name="notes_export_error">Error: Could not export successfully to %1$s/%2$s …</string>
     <string name="btn_export_export_now">Export now</string>
-    <string name="no_notes">You don\'t have any notes yet.\nYou can add notes every day below the displayed text.</string>
-    <string name="no_notes_for_filter">No notes found that contain the text \'%1$s\'</string>
+    <string name="no_notes">You don\'t have any notes yet.\nYou can add notes every day below the displayed dailyText.</string>
+    <string name="no_notes_for_filter">No notes found that contain the dailyText \'%1$s\'</string>
     <string name="edit_note">edit</string>
     <string name="snackbar_retry">Retry</string>
-    <string name="cd_the_word_no_content">No content for this date</string>
+    <string name="cd_daily_text_no_content">No content for this date</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="view_pager_loading_content">Loading data</string>
     <string name="bible_no_bibles">Can\'t find any translations</string>
@@ -99,7 +99,7 @@
     <string name="note_list_title">All Notes</string>
     <string name="bible_activity_title">@string/app_name</string>
     <string name="main_activity_title">@string/app_name</string>
-    <string name="the_word_change_translation">Change Translation</string>
+    <string name="daily_text_change_translation">Change Translation</string>
     <string name="cd_no_notes">no notes</string>
     <string name="share_dialog_title">Share</string>
     <string name="share_dialog_ok">Share</string>
@@ -125,7 +125,7 @@
     <string name="info_prefix">Info:</string>
     <string name="share_app_title">Share app</string>
     <string name="pref_app_show_daily_notification_summary_off">No Notifications</string>
-    <string name="pref_app_show_daily_notification_summary_on">Display The Word as a notification every day</string>
+    <string name="pref_app_show_daily_notification_summary_on">Display daily text as a notification every day</string>
     <string name="pref_shownotes_summary_off">Notes hidden</string>
     <string name="pref_shownotes_summary_on">Notes visible below the bible verses</string>
     <string name="fontsize_dialog_title">Set font size</string>
