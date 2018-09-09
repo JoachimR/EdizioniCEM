@@ -9,17 +9,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.webkit.URLUtil
 import de.reiss.edizioni.App
 import de.reiss.edizioni.DaysPositionUtil
 import de.reiss.edizioni.R
 import de.reiss.edizioni.architecture.AppFragment
 import de.reiss.edizioni.architecture.AsyncLoad
+import de.reiss.edizioni.architecture.GlideApp
 import de.reiss.edizioni.events.DatabaseRefreshed
 import de.reiss.edizioni.events.FontSizeChanged
 import de.reiss.edizioni.events.JsonDownloadRequested
 import de.reiss.edizioni.events.postMessageEvent
 import de.reiss.edizioni.formattedDate
-import de.reiss.edizioni.model.DailyText
 import de.reiss.edizioni.preferences.AppPreferences
 import de.reiss.edizioni.preferences.AppPreferencesActivity
 import de.reiss.edizioni.util.copyToClipboard
@@ -67,7 +68,7 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.menu_share).isEnabled = viewModel.dailyText() != null
+        menu.findItem(R.id.menu_share).isEnabled = viewModel.contentToDisplay() != null
         super.onPrepareOptionsMenu(menu)
     }
 
@@ -146,14 +147,23 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
     }
 
     override fun initViewModelObservers() {
-        viewModel.dailyTextLiveData().observe(this, Observer<AsyncLoad<DailyText>> {
+        viewModel.contentToDisplayLiveData().observe(this, Observer<AsyncLoad<ContentToDisplay>> {
             updateUi()
         })
     }
 
     private fun updateUi() {
         val context = context ?: return
-        val theWord = viewModel.dailyText()
+        val contentToDisplay = viewModel.contentToDisplay()
+
+        contentToDisplay?.yearInfo?.imageUrl?.let {
+            if(URLUtil.isValidUrl(contentToDisplay.yearInfo.imageUrl)) {
+                GlideApp.with(daily_text_image)
+                        .load(contentToDisplay.yearInfo.imageUrl)
+                        .fitCenter()
+                        .into(daily_text_image)
+            }
+        }
 
         daily_text_date.text = formattedDate(context, date().time)
 
@@ -163,7 +173,7 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
                 daily_text_loading.loading = true
             }
 
-            (viewModel.isError() || theWord == null) -> {
+            (viewModel.isError() || contentToDisplay == null) -> {
                 daily_text_loading.loading = false
                 daily_text_empty_root.visibility = VISIBLE
                 daily_text_content_root.visibility = GONE
@@ -174,10 +184,12 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
                 daily_text_empty_root.visibility = GONE
                 daily_text_content_root.visibility = VISIBLE
 
-                daily_text_text1.text = htmlize(theWord.verse)
-                daily_text_ref1.text = theWord.bibleRef
-                daily_text_text2.text = htmlize(theWord.devotions.joinToString("\n"))
-                daily_text_ref2.text = theWord.author
+
+
+                daily_text_text1.text = htmlize(contentToDisplay.dailyText.verse)
+                daily_text_ref1.text = contentToDisplay.dailyText.bibleRef
+                daily_text_text2.text = htmlize(contentToDisplay.dailyText.devotions.joinToString("\n\n"))
+                daily_text_ref2.text = contentToDisplay.dailyText.author
             }
         }
 
@@ -202,7 +214,7 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         val date = date()
 
         if (viewModel.isLoading().not()) {
-            viewModel.loadDailyText(date)
+            viewModel.loadContentToDisplay(date)
         }
     }
 
@@ -210,10 +222,10 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
 
     private fun share() {
         context?.let { context ->
-            viewModel.dailyText()?.let { dailyText ->
+            viewModel.contentToDisplay()?.let { contentToDisplay ->
                 displayDialog(ShareDialog.createInstance(
                         context = context,
-                        dailyText= dailyText
+                        dailyText= contentToDisplay.dailyText
                 ))
             }
         }

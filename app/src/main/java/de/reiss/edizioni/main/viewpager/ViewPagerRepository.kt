@@ -82,12 +82,12 @@ open class ViewPagerRepository @Inject constructor(private val executor: Executo
 
     @WorkerThread
     private fun downloadAndStoreItems(year: Int): Boolean {
-        calendarFromRawDownloader.loadCalendar(year)?.let { edizioniJson ->
-            return downloadAndStore(edizioniJson)
-        }
-//        calendarDownloader.downloadCalendar(year)?.let { edizioniJson ->
-//            return downloadAndStore(year, edizioniJson)
+//        calendarFromRawDownloader.loadCalendar(year)?.let { edizioniJson ->
+//            return downloadAndStore(edizioniJson)
 //        }
+        calendarDownloader.downloadCalendar(year)?.let { jsonData ->
+            return downloadAndStore(jsonData)
+        }
         return false
     }
 

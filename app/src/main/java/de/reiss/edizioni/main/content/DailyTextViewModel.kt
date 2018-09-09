@@ -5,24 +5,23 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import de.reiss.edizioni.architecture.AsyncLoad
 import de.reiss.edizioni.architecture.AsyncLoadStatus
-import de.reiss.edizioni.model.DailyText
 import java.util.*
 
 open class DailyTextViewModel(private val repository: DailyTextRepository) : ViewModel() {
 
-    private val dailyTextLiveData: MutableLiveData<AsyncLoad<DailyText>> = MutableLiveData()
+    private val contentToDisplayLiveData: MutableLiveData<AsyncLoad<ContentToDisplay>> = MutableLiveData()
 
-    open fun dailyTextLiveData() = dailyTextLiveData
+    open fun contentToDisplayLiveData() = contentToDisplayLiveData
 
-    open fun loadDailyText(date: Date) {
-        repository.getDailyTextFor(date, dailyTextLiveData())
+    open fun loadContentToDisplay(date: Date) {
+        repository.getContentToDisplay(date, contentToDisplayLiveData())
     }
 
-    fun dailyText() = dailyTextLiveData().value?.data
+    fun contentToDisplay() = contentToDisplayLiveData().value?.data
 
-    fun isLoading() = dailyTextLiveData().value?.loadStatus == AsyncLoadStatus.LOADING
-    fun isError() = dailyTextLiveData().value?.loadStatus == AsyncLoadStatus.ERROR
-    fun isSuccess() = dailyTextLiveData().value?.loadStatus == AsyncLoadStatus.SUCCESS
+    fun isLoading() = contentToDisplayLiveData().value?.loadStatus == AsyncLoadStatus.LOADING
+    fun isError() = contentToDisplayLiveData().value?.loadStatus == AsyncLoadStatus.ERROR
+    fun isSuccess() = contentToDisplayLiveData().value?.loadStatus == AsyncLoadStatus.SUCCESS
 
     class Factory(private val repository: DailyTextRepository) : ViewModelProvider.NewInstanceFactory() {
 

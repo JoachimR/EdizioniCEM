@@ -9,6 +9,6 @@ import de.reiss.edizioni.database.items.meta.MetaItemFull
 interface MetaItemDaoFull {
 
     @Query("SELECT * FROM MetaItem WHERE MetaItem.year = :year")
-    fun forYear(year: Int): MetaItemFull
+    fun forYear(year: Int): MetaItemFull?
 
 }
