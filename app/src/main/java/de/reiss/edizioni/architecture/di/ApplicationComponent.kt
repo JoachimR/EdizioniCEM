@@ -3,6 +3,7 @@ package de.reiss.edizioni.architecture.di
 import android.content.ClipboardManager
 import android.content.Context
 import dagger.Component
+import de.reiss.edizioni.download.DownloadAndStore
 import de.reiss.edizioni.main.content.DailyTextRepository
 import de.reiss.edizioni.main.viewpager.ViewPagerRepository
 import de.reiss.edizioni.notification.NotificationHelper
@@ -29,6 +30,8 @@ interface ApplicationComponent {
 
     val dailyTextRepository: DailyTextRepository
     val viewPagerRepository: ViewPagerRepository
+
+    val downloadAndStore: DownloadAndStore
 
     val widgetRefresher: WidgetRefresher
 

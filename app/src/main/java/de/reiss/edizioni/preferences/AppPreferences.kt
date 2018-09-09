@@ -12,12 +12,12 @@ import de.reiss.edizioni.events.postMessageEvent
 import de.reiss.edizioni.util.extensions.change
 import de.reiss.edizioni.widget.triggerWidgetRefresh
 
-open class AppPreferences(val context: Context) : OnSharedPreferenceChangeListener {
+class AppPreferences(val context: Context) : OnSharedPreferenceChangeListener {
 
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     init {
-        registerListener(this)
+        preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -38,17 +38,6 @@ open class AppPreferences(val context: Context) : OnSharedPreferenceChangeListen
             || key == str(R.string.pref_widget_backgroundcolor_key)
             || key == str(R.string.pref_widget_showdate_key)
             || key == str(R.string.pref_widget_centered_text_key))
-
-    fun registerListener(listener: OnSharedPreferenceChangeListener) {
-        preferences.registerOnSharedPreferenceChangeListener(listener)
-    }
-
-    fun currentTheme(): AppTheme {
-        val chosenTheme = prefString(R.string.pref_theme_key, R.string.pref_theme_default)
-        return AppTheme.find(context, chosenTheme) ?: AppTheme.RED_TEAL
-    }
-
-    fun showNotes() = prefBoolean(R.string.pref_shownotes_key, true)
 
     fun shouldShowDailyNotification() =
             prefBoolean(R.string.pref_show_daily_notification_key, false)

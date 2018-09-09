@@ -11,10 +11,8 @@ import de.reiss.edizioni.DaysPositionUtil
 import de.reiss.edizioni.R
 import de.reiss.edizioni.architecture.AppFragment
 import de.reiss.edizioni.architecture.AsyncLoad
-import de.reiss.edizioni.events.DatabaseRefreshed
-import de.reiss.edizioni.events.JsonDownloadRequested
-import de.reiss.edizioni.events.ViewPagerMoveRequest
-import de.reiss.edizioni.events.postMessageEvent
+import de.reiss.edizioni.events.*
+import de.reiss.edizioni.main.MainActivity
 import de.reiss.edizioni.util.extensions.registerToEventBus
 import de.reiss.edizioni.util.extensions.unregisterFromEventBus
 import kotlinx.android.synthetic.main.view_pager_fragment.*
@@ -113,6 +111,18 @@ class ViewPagerFragment : AppFragment<ViewPagerViewModel>(R.layout.view_pager_fr
     fun onMessageEvent(event: ViewPagerMoveRequest) {
         goToPosition(event.position)
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: ChangeDateDisplayRequest) {
+        val currentPosition = currentPosition()
+
+        // TODO fix this
+        if(event.position == currentPosition) {
+            (activity as MainActivity).setHeader(event.date, event.imageUrl)
+        }
+    }
+
+
 
     private fun updateUi() {
         if (viewModel.isLoadingContent()) {

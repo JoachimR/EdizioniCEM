@@ -9,22 +9,20 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.webkit.URLUtil
 import de.reiss.edizioni.App
 import de.reiss.edizioni.DaysPositionUtil
 import de.reiss.edizioni.R
 import de.reiss.edizioni.architecture.AppFragment
 import de.reiss.edizioni.architecture.AsyncLoad
-import de.reiss.edizioni.architecture.GlideApp
-import de.reiss.edizioni.events.DatabaseRefreshed
-import de.reiss.edizioni.events.FontSizeChanged
-import de.reiss.edizioni.events.JsonDownloadRequested
-import de.reiss.edizioni.events.postMessageEvent
+import de.reiss.edizioni.events.*
 import de.reiss.edizioni.formattedDate
 import de.reiss.edizioni.preferences.AppPreferences
 import de.reiss.edizioni.preferences.AppPreferencesActivity
 import de.reiss.edizioni.util.copyToClipboard
-import de.reiss.edizioni.util.extensions.*
+import de.reiss.edizioni.util.extensions.onClick
+import de.reiss.edizioni.util.extensions.registerToEventBus
+import de.reiss.edizioni.util.extensions.showShortSnackbar
+import de.reiss.edizioni.util.extensions.unregisterFromEventBus
 import de.reiss.edizioni.util.htmlize
 import kotlinx.android.synthetic.main.daily_text.*
 import kotlinx.android.synthetic.main.daily_text_content.*
@@ -93,6 +91,10 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         super.onStart()
         registerToEventBus()
         tryLoad()
+
+        viewModel.contentToDisplay()?.let {
+            sendDateHeaderUpdateRequest(it)
+        }
     }
 
     override fun onStop() {
@@ -156,17 +158,6 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         val context = context ?: return
         val contentToDisplay = viewModel.contentToDisplay()
 
-        contentToDisplay?.yearInfo?.imageUrl?.let {
-            if(URLUtil.isValidUrl(contentToDisplay.yearInfo.imageUrl)) {
-                GlideApp.with(daily_text_image)
-                        .load(contentToDisplay.yearInfo.imageUrl)
-                        .fitCenter()
-                        .into(daily_text_image)
-            }
-        }
-
-        daily_text_date.text = formattedDate(context, date().time)
-
         when {
 
             viewModel.isLoading() -> {
@@ -184,11 +175,12 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
                 daily_text_empty_root.visibility = GONE
                 daily_text_content_root.visibility = VISIBLE
 
+                sendDateHeaderUpdateRequest(contentToDisplay)
 
-
+                daily_text_date.text = formattedDate(context, contentToDisplay.dailyText.date.time)
                 daily_text_text1.text = htmlize(contentToDisplay.dailyText.verse)
                 daily_text_ref1.text = contentToDisplay.dailyText.bibleRef
-                daily_text_text2.text = htmlize(contentToDisplay.dailyText.devotions.joinToString("\n\n"))
+                daily_text_text2.text = htmlize(contentToDisplay.dailyText.devotions.joinToString("<br><br>"))
                 daily_text_ref2.text = contentToDisplay.dailyText.author
             }
         }
@@ -218,6 +210,13 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         }
     }
 
+    private fun sendDateHeaderUpdateRequest(contentToDisplay: ContentToDisplay) {
+        postMessageEvent(ChangeDateDisplayRequest(position,
+                contentToDisplay.dailyText.date,
+                contentToDisplay.yearInfo.imageUrl
+        ))
+    }
+
     private fun date() = DaysPositionUtil.dayFor(position).time
 
     private fun share() {
@@ -225,7 +224,7 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
             viewModel.contentToDisplay()?.let { contentToDisplay ->
                 displayDialog(ShareDialog.createInstance(
                         context = context,
-                        dailyText= contentToDisplay.dailyText
+                        dailyText = contentToDisplay.dailyText
                 ))
             }
         }

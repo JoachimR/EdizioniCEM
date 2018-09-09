@@ -6,13 +6,6 @@
     <string name="source_code_prefix">Quellcode:</string>
     <string name="info_participate">Wenn Sie beim Erstellen von neuen Inhalten mithelfen möchten, bitte besuchen Sie:</string>
     <string name="pref_screen_settings_title">Einstellungen</string>
-    <string name="pref_theme_title">Thema</string>
-    <string-array name="pref_theme_themes_displayed">
-        <item>Rot/Blaugrün</item>
-        <item>Blau/Orange</item>
-        <item>Grau/Türkis</item>
-        <item>Grün/Braun</item>
-    </string-array>
     <string name="pref_language_title">Übersetzung</string>
     <string name="pref_app_category_title">App Einstellungen</string>
     <string name="pref_fontsize_title">Schriftgröße</string>

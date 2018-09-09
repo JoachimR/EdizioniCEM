@@ -21,14 +21,6 @@
 
     <PreferenceCategory android:title="@string/pref_display_category_title">
 
-        <ListPreference
-            android:defaultValue="@string/pref_theme_default"
-            android:entries="@array/pref_theme_themes_displayed"
-            android:entryValues="@array/pref_theme_themes_values"
-            android:key="@string/pref_theme_key"
-            android:summary="%s"
-            android:title="@string/pref_theme_title" />
-
         <SeekBarPreference
             android:defaultValue="@string/pref_fontsize_default"
             android:key="@string/pref_fontsize_key"

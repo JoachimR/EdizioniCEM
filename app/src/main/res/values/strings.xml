@@ -8,13 +8,6 @@
     <string name="source_code_prefix">Source code:</string>
     <string name="info_participate">If you want to participate in creating new content, please visit:</string>
     <string name="pref_screen_settings_title">Settings</string>
-    <string name="pref_theme_title">Theme</string>
-    <string-array name="pref_theme_themes_displayed">
-        <item>Red/Teal</item>
-        <item>Blue/Orange</item>
-        <item>Grey/Cyan</item>
-        <item>Green/Brown</item>
-    </string-array>
     <string name="pref_language_title">Translation</string>
     <string name="pref_app_category_title">Application settings</string>
     <string name="pref_fontsize_title">Content Font Size</string>
