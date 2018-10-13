@@ -14,7 +14,7 @@ android {
 }
 
 dependencies {
-    compile libraries.kotlin.lib
+    implementation libraries.kotlin.lib
 
-    compile libraries.eventbus
+    api libraries.eventbus
 }

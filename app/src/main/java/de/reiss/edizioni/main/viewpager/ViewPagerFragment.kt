@@ -11,8 +11,11 @@ import de.reiss.edizioni.DaysPositionUtil
 import de.reiss.edizioni.R
 import de.reiss.edizioni.architecture.AppFragment
 import de.reiss.edizioni.architecture.AsyncLoad
-import de.reiss.edizioni.events.*
-import de.reiss.edizioni.main.MainActivity
+import de.reiss.edizioni.events.DatabaseRefreshed
+import de.reiss.edizioni.events.JsonDownloadRequested
+import de.reiss.edizioni.events.ViewPagerMoveRequest
+import de.reiss.edizioni.events.postMessageEvent
+import de.reiss.edizioni.main.content.DailyTextFragment
 import de.reiss.edizioni.util.extensions.registerToEventBus
 import de.reiss.edizioni.util.extensions.unregisterFromEventBus
 import kotlinx.android.synthetic.main.view_pager_fragment.*
@@ -21,7 +24,8 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 
-class ViewPagerFragment : AppFragment<ViewPagerViewModel>(R.layout.view_pager_fragment) {
+class ViewPagerFragment : AppFragment<ViewPagerViewModel>(R.layout.view_pager_fragment),
+        DailyTextFragmentFocusChangeListener {
 
     companion object {
 
@@ -37,10 +41,6 @@ class ViewPagerFragment : AppFragment<ViewPagerViewModel>(R.layout.view_pager_fr
                 }
             }
         }
-    }
-
-    private val appPreferences by lazy {
-        App.component.appPreferences
     }
 
     private var savedPosition = INVALID_POSITION
@@ -78,7 +78,7 @@ class ViewPagerFragment : AppFragment<ViewPagerViewModel>(R.layout.view_pager_fr
     }
 
     override fun initViews() {
-        adapter = ViewPagerAdapter(childFragmentManager)
+        adapter = ViewPagerAdapter(childFragmentManager, this)
         view_pager.adapter = adapter
     }
 
@@ -100,6 +100,10 @@ class ViewPagerFragment : AppFragment<ViewPagerViewModel>(R.layout.view_pager_fr
         tryRefresh()
     }
 
+    override fun onPrimaryItemChange(dailyTextFragment: DailyTextFragment) {
+        dailyTextFragment.setMainHeader()
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: JsonDownloadRequested) {
         if (viewModel.isLoadingContent().not()) {
@@ -111,18 +115,6 @@ class ViewPagerFragment : AppFragment<ViewPagerViewModel>(R.layout.view_pager_fr
     fun onMessageEvent(event: ViewPagerMoveRequest) {
         goToPosition(event.position)
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: ChangeDateDisplayRequest) {
-        val currentPosition = currentPosition()
-
-        // TODO fix this
-        if(event.position == currentPosition) {
-            (activity as MainActivity).setHeader(event.date, event.imageUrl)
-        }
-    }
-
-
 
     private fun updateUi() {
         if (viewModel.isLoadingContent()) {

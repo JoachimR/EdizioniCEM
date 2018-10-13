@@ -36,7 +36,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center_vertical"
-                    android:background="@color/grey"
                     android:orientation="vertical"
                     android:paddingBottom="8dp"
                     android:paddingEnd="16dp"
@@ -104,7 +103,7 @@
                 </LinearLayout>
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/collapsing_toolbar"
+                    android:id="@+id/main_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin" />
@@ -118,6 +117,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <include layout="@layout/audio_bottom_sheet" />
 
     </android.support.design.widget.CoordinatorLayout>
 

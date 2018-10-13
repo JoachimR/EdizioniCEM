@@ -32,15 +32,11 @@ class AppPreferences(val context: Context) : OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun isWidgetPref(key: String): Boolean = (key == str(R.string.pref_language_key)
-            || key == str(R.string.pref_widget_fontsize_key)
+    private fun isWidgetPref(key: String): Boolean = (key == str(R.string.pref_widget_fontsize_key)
             || key == str(R.string.pref_widget_fontcolor_key)
             || key == str(R.string.pref_widget_backgroundcolor_key)
             || key == str(R.string.pref_widget_showdate_key)
             || key == str(R.string.pref_widget_centered_text_key))
-
-    fun shouldShowDailyNotification() =
-            prefBoolean(R.string.pref_show_daily_notification_key, false)
 
     fun fontSize() = prefInt(
             stringRes = R.string.pref_fontsize_key,

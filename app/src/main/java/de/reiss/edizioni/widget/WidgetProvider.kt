@@ -11,7 +11,7 @@ import android.widget.RemoteViews
 import de.reiss.edizioni.App
 import de.reiss.edizioni.R
 import de.reiss.edizioni.SplashScreenActivity
-import de.reiss.edizioni.logger.logErrorWithCrashlytics
+import de.reiss.edizioni.logger.logError
 import de.reiss.edizioni.preferences.AppPreferences
 
 class WidgetProvider : AppWidgetProvider() {
@@ -58,7 +58,7 @@ class WidgetProvider : AppWidgetProvider() {
             }
             super.onUpdate(context, appWidgetManager, appWidgetIds)
         } catch (e: Exception) {
-            logErrorWithCrashlytics(e) { "Error when updating widget" }
+            logError(e) { "Error when updating widget" }
         }
     }
 

@@ -1,7 +1,7 @@
 ext.libraries = [
 
         kotlin               : [
-                lib   : "org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin",
+                lib   : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
                 plugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
         ],
 
@@ -48,8 +48,6 @@ ext.libraries = [
         firebase             : [
                 database: "com.google.firebase:firebase-database:$versions.firebase"
         ],
-
-        crashlytics          : "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar",
 
         play_services        : [
                 gcm: "com.google.android.gms:play-services-gcm:$versions.play_service"

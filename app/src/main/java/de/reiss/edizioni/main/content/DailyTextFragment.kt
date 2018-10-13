@@ -3,32 +3,41 @@ package de.reiss.edizioni.main.content
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import de.reiss.edizioni.App
 import de.reiss.edizioni.DaysPositionUtil
 import de.reiss.edizioni.R
 import de.reiss.edizioni.architecture.AppFragment
 import de.reiss.edizioni.architecture.AsyncLoad
-import de.reiss.edizioni.events.*
-import de.reiss.edizioni.formattedDate
+import de.reiss.edizioni.events.DatabaseRefreshed
+import de.reiss.edizioni.events.FontSizeChanged
+import de.reiss.edizioni.events.JsonDownloadRequested
+import de.reiss.edizioni.events.postMessageEvent
+import de.reiss.edizioni.main.MainActivity
 import de.reiss.edizioni.preferences.AppPreferences
 import de.reiss.edizioni.preferences.AppPreferencesActivity
 import de.reiss.edizioni.util.copyToClipboard
-import de.reiss.edizioni.util.extensions.onClick
-import de.reiss.edizioni.util.extensions.registerToEventBus
-import de.reiss.edizioni.util.extensions.showShortSnackbar
-import de.reiss.edizioni.util.extensions.unregisterFromEventBus
+import de.reiss.edizioni.util.extensions.*
 import de.reiss.edizioni.util.htmlize
 import kotlinx.android.synthetic.main.daily_text.*
 import kotlinx.android.synthetic.main.daily_text_content.*
 import kotlinx.android.synthetic.main.daily_text_empty.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 
 class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
@@ -50,6 +59,8 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
     }
 
     private var position = -1
+
+    private var isInFocus = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,13 +98,18 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
                 else -> super.onOptionsItemSelected(item)
             }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        isInFocus = isVisibleToUser
+    }
+
     override fun onStart() {
         super.onStart()
         registerToEventBus()
         tryLoad()
 
-        viewModel.contentToDisplay()?.let {
-            sendDateHeaderUpdateRequest(it)
+        if (shouldShowAudio() && exoPlayer == null) {
+            prepareExoPlayerFromURL()
         }
     }
 
@@ -129,12 +145,24 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
             true
         }
 
-        daily_text_ref2.setOnLongClickListener { listener ->
-            context?.let {
-                copyToClipboard(it, daily_text_ref2.text.toString())
-                showShortSnackbar(message = R.string.copied_to_clipboard)
+        daily_text_audio.visibleElseGone(shouldShowAudio())
+        daily_text_audio.onClick {
+            (activity as MainActivity).showOrHideBottomSheet()
+//            if (exoPlayer == null) {
+//                prepareExoPlayerFromURL()
+//            } else {
+//                setPlayPause(!isPlaying)
+//            }
+        }
+    }
+
+    fun setMainHeader() {
+        (activity as? MainActivity)?.let { mainActivity ->
+            viewModel.contentToDisplay()?.let { contentToDisplay ->
+                mainActivity.setHeader(
+                        contentToDisplay.dailyText.date,
+                        contentToDisplay.yearInfo.imageUrl)
             }
-            true
         }
     }
 
@@ -155,7 +183,6 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
     }
 
     private fun updateUi() {
-        val context = context ?: return
         val contentToDisplay = viewModel.contentToDisplay()
 
         when {
@@ -175,9 +202,6 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
                 daily_text_empty_root.visibility = GONE
                 daily_text_content_root.visibility = VISIBLE
 
-                sendDateHeaderUpdateRequest(contentToDisplay)
-
-                daily_text_date.text = formattedDate(context, contentToDisplay.dailyText.date.time)
                 daily_text_text1.text = htmlize(contentToDisplay.dailyText.verse)
                 daily_text_ref1.text = contentToDisplay.dailyText.bibleRef
                 daily_text_text2.text = htmlize(contentToDisplay.dailyText.devotions.joinToString("<br><br>"))
@@ -195,7 +219,6 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         val contentSize = (size * 1.1).toFloat()
         val refSize = (size * 0.7).toFloat()
 
-        daily_text_date.textSize = contentSize
         daily_text_text1.textSize = contentSize
         daily_text_ref1.textSize = refSize
         daily_text_text2.textSize = contentSize
@@ -210,13 +233,6 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         }
     }
 
-    private fun sendDateHeaderUpdateRequest(contentToDisplay: ContentToDisplay) {
-        postMessageEvent(ChangeDateDisplayRequest(position,
-                contentToDisplay.dailyText.date,
-                contentToDisplay.yearInfo.imageUrl
-        ))
-    }
-
     private fun date() = DaysPositionUtil.dayFor(position).time
 
     private fun share() {
@@ -229,5 +245,82 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
             }
         }
     }
+
+    private var exoPlayer: SimpleExoPlayer? = null
+
+    private var isPlaying = false
+
+    private val eventListener = object : Player.EventListener {
+        override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+
+        }
+
+        override fun onSeekProcessed() {
+        }
+
+        override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
+        }
+
+        override fun onPlayerError(error: ExoPlaybackException?) {
+        }
+
+        override fun onLoadingChanged(isLoading: Boolean) {
+        }
+
+        override fun onPositionDiscontinuity(reason: Int) {
+        }
+
+        override fun onRepeatModeChanged(repeatMode: Int) {
+        }
+
+        override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+        }
+
+        override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+        }
+
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) {
+                Player.STATE_ENDED -> {
+                    setPlayPause(false)
+                    exoPlayer?.seekTo(0)
+                }
+                Player.STATE_READY -> {
+                }
+                Player.STATE_BUFFERING -> {
+                }
+                Player.STATE_IDLE -> {
+                }
+            }
+        }
+
+    }
+
+    private fun prepareExoPlayerFromURL() {
+        val context = context!!
+
+        val uri = Uri.parse("http://www.radiorisposta.org/wp/public/FilesAudio/UPO/UNA%20PAROLA%20PER%20OGGI.mp3")
+
+        val trackSelector = DefaultTrackSelector()
+
+        val loadControl = DefaultLoadControl()
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(context), trackSelector, loadControl)
+        exoPlayer?.let { player ->
+            val dataSourceFactory = DefaultDataSourceFactory(context,
+                    Util.getUserAgent(context, getString(R.string.app_name)), null)
+            val audioSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+            player.addListener(eventListener)
+            player.prepare(audioSource)
+        }
+    }
+
+    private fun setPlayPause(play: Boolean) {
+        exoPlayer?.let {
+            isPlaying = play
+            it.playWhenReady = play
+        }
+    }
+
+    private fun shouldShowAudio() = DaysPositionUtil.positionFor(Calendar.getInstance()) == position
 
 }

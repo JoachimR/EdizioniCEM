@@ -17,23 +17,16 @@
             android:paddingBottom="16dp">
 
             <ImageView
-                android:id="@+id/daily_text_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/daily_text_date"
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
+                android:id="@+id/daily_text_audio"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:gravity="center"
-                android:paddingTop="16dp"
-                android:textSize="20sp"
-                tools:text="21. Januar 2017"
-                tools:textSize="88sp" />
+                android:layout_marginTop="16dp"
+                android:background="?attr/selectableItemBackground"
+                app:srcCompat="@drawable/ic_volume_up_black_24dp"
+                android:contentDescription="@string/content_descr_daily_text_audio" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -47,7 +40,8 @@
                 <include
                     android:id="@+id/daily_text_content_root"
                     layout="@layout/daily_text_content"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </FrameLayout>
 

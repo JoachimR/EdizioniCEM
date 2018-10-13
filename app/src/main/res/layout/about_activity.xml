@@ -70,20 +70,6 @@
                     android:autoLink="web"
                     android:text="@string/info_general_url" />
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/info_participate" />
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:text="@string/info_participate_url" />
-
             </LinearLayout>
 
             <LinearLayout

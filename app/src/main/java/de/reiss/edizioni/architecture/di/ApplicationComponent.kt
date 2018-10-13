@@ -4,9 +4,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import dagger.Component
 import de.reiss.edizioni.download.DownloadAndStore
+import de.reiss.edizioni.main.audio.AudioHandler
 import de.reiss.edizioni.main.content.DailyTextRepository
 import de.reiss.edizioni.main.viewpager.ViewPagerRepository
-import de.reiss.edizioni.notification.NotificationHelper
 import de.reiss.edizioni.preferences.AppPreferences
 import de.reiss.edizioni.widget.WidgetRefresher
 
@@ -31,10 +31,11 @@ interface ApplicationComponent {
     val dailyTextRepository: DailyTextRepository
     val viewPagerRepository: ViewPagerRepository
 
+    val audioHandler: AudioHandler
+
     val downloadAndStore: DownloadAndStore
 
     val widgetRefresher: WidgetRefresher
 
-    val notificationHelper: NotificationHelper
     val appPreferences: AppPreferences
 }
