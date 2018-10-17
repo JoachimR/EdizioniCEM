@@ -13,13 +13,6 @@
             app:min="@string/pref_fontsize_min"
             app:showSeekBarValue="true" />
 
-        <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="@string/pref_shownotes_key"
-            android:summaryOn="@string/pref_shownotes_summary_on"
-            android:summaryOff="@string/pref_shownotes_summary_off"
-            android:title="@string/pref_shownotes_title" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_widget_category_title">

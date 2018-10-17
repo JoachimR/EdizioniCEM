@@ -2,7 +2,6 @@
 <resources>
 
     <string name="pref_fontsize_key" translatable="false">fontsize</string>
-    <string name="pref_shownotes_key" translatable="false">shownotes</string>
     <string name="pref_widget_backgroundcolor_key" translatable="false">widget_backgroundcolor</string>
 
     <string name="pref_widget_fontcolor_key" translatable="false">widget_fontcolor</string>

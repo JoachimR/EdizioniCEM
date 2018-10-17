@@ -1,7 +1,7 @@
 package de.reiss.edizioni.preferences
 
 import android.os.Bundle
-import android.support.v7.preference.PreferenceFragmentCompat
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat
 import de.reiss.edizioni.R
 
 
@@ -13,7 +13,7 @@ class AppPreferencesFragment : PreferenceFragmentCompat() {
 
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
     }
 

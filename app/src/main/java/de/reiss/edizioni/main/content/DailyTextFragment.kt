@@ -3,20 +3,12 @@ package de.reiss.edizioni.main.content
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
 import de.reiss.edizioni.App
 import de.reiss.edizioni.DaysPositionUtil
 import de.reiss.edizioni.R
@@ -106,11 +98,8 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
     override fun onStart() {
         super.onStart()
         registerToEventBus()
+        refreshAudioVisibility()
         tryLoad()
-
-        if (shouldShowAudio() && exoPlayer == null) {
-            prepareExoPlayerFromURL()
-        }
     }
 
     override fun onStop() {
@@ -137,22 +126,18 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
             }
         }
 
-        daily_text_ref1.setOnLongClickListener { listener ->
-            context?.let {
-                copyToClipboard(it, daily_text_ref1.text.toString())
+        daily_text_ref1.setOnLongClickListener {
+            context?.let { context ->
+                copyToClipboard(context, daily_text_ref1.text.toString())
                 showShortSnackbar(message = R.string.copied_to_clipboard)
             }
             true
         }
 
-        daily_text_audio.visibleElseGone(shouldShowAudio())
         daily_text_audio.onClick {
-            (activity as MainActivity).showOrHideBottomSheet()
-//            if (exoPlayer == null) {
-//                prepareExoPlayerFromURL()
-//            } else {
-//                setPlayPause(!isPlaying)
-//            }
+            viewModel.contentToDisplay()?.yearInfo?.audioUrl?.let { audioUrl ->
+                (activity as MainActivity).showPlayerFor(position, audioUrl)
+            }
         }
     }
 
@@ -246,80 +231,7 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         }
     }
 
-    private var exoPlayer: SimpleExoPlayer? = null
-
-    private var isPlaying = false
-
-    private val eventListener = object : Player.EventListener {
-        override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
-
-        }
-
-        override fun onSeekProcessed() {
-        }
-
-        override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
-        }
-
-        override fun onPlayerError(error: ExoPlaybackException?) {
-        }
-
-        override fun onLoadingChanged(isLoading: Boolean) {
-        }
-
-        override fun onPositionDiscontinuity(reason: Int) {
-        }
-
-        override fun onRepeatModeChanged(repeatMode: Int) {
-        }
-
-        override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-        }
-
-        override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
-        }
-
-        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            when (playbackState) {
-                Player.STATE_ENDED -> {
-                    setPlayPause(false)
-                    exoPlayer?.seekTo(0)
-                }
-                Player.STATE_READY -> {
-                }
-                Player.STATE_BUFFERING -> {
-                }
-                Player.STATE_IDLE -> {
-                }
-            }
-        }
-
-    }
-
-    private fun prepareExoPlayerFromURL() {
-        val context = context!!
-
-        val uri = Uri.parse("http://www.radiorisposta.org/wp/public/FilesAudio/UPO/UNA%20PAROLA%20PER%20OGGI.mp3")
-
-        val trackSelector = DefaultTrackSelector()
-
-        val loadControl = DefaultLoadControl()
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(context), trackSelector, loadControl)
-        exoPlayer?.let { player ->
-            val dataSourceFactory = DefaultDataSourceFactory(context,
-                    Util.getUserAgent(context, getString(R.string.app_name)), null)
-            val audioSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
-            player.addListener(eventListener)
-            player.prepare(audioSource)
-        }
-    }
-
-    private fun setPlayPause(play: Boolean) {
-        exoPlayer?.let {
-            isPlaying = play
-            it.playWhenReady = play
-        }
-    }
+    private fun refreshAudioVisibility() = daily_text_audio.visibleElseGone(shouldShowAudio())
 
     private fun shouldShowAudio() = DaysPositionUtil.positionFor(Calendar.getInstance()) == position
 

@@ -2,11 +2,9 @@
 <resources>
     <color name="colorPrimary">#E27100</color>
     <color name="colorPrimaryDark">#A94300</color>
-    <color name="colorPrimaryLight">#FFA13F</color>
     <color name="colorAccent">#1D497C</color>
 
-    <color name="grey300">@color/md_grey_500</color>
-    <color name="white">@color/md_white_1000</color>
+    <color name="audio_bottom_sheet_background">@color/md_grey_200</color>
 
     <color name="font_white">#FFFFFF</color>
     <color name="font_grey">#9E9E9E</color>

@@ -37,20 +37,20 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center_vertical"
                     android:orientation="vertical"
-                    android:paddingBottom="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="16dp"
                     android:paddingStart="0dp"
-                    android:paddingTop="8dp">
+                    android:paddingLeft="0dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp">
 
                     <TextView
                         android:id="@+id/collapsing_toolbar_date_view_weekday"
                         style="@style/TextAppearance.AppCompat.Headline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="48dp"
                         android:layout_marginStart="48dp"
+                        android:layout_marginLeft="48dp"
                         tools:text="Saturday" />
 
                     <LinearLayout
@@ -63,7 +63,7 @@
                             style="@style/TextAppearance.AppCompat.Display1"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:tint="@color/white"
+                            android:tint="@color/md_white_1000"
                             app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
                         <TextView
@@ -78,8 +78,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="48dp"
                         android:layout_marginStart="48dp"
+                        android:layout_marginLeft="48dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -94,8 +94,8 @@
                             style="@style/TextAppearance.AppCompat.Headline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
                             tools:text="2018" />
 
                     </LinearLayout>
@@ -119,6 +119,22 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <include layout="@layout/audio_bottom_sheet" />
+
+        <FrameLayout
+            android:id="@+id/play_seek_bar_root"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="-40dp"
+            app:layout_anchor="@id/audio_bottom_sheet">
+
+            <SeekBar
+                android:id="@+id/play_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:thumbTint="@color/colorPrimary" />
+
+        </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

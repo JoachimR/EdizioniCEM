@@ -15,6 +15,7 @@ ext.libraries = [
                 design       : "com.android.support:design:$versions.support_lib",
                 recycler_view: "com.android.support:recyclerview-v7:$versions.support_lib",
                 card_view    : "com.android.support:cardview-v7:$versions.support_lib",
+                media_compat:  "com.android.support:support-media-compat:$versions.support_lib",
                 test_runner  : "com.android.support.test:runner:$versions.support_test",
                 test_rules   : "com.android.support.test:rules:$versions.support_test"
         ],

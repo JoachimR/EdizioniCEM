@@ -3,85 +3,67 @@
     android:id="@+id/audio_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:background="@color/md_grey_200"
-    app:behavior_hideable="true"
+    android:background="@color/audio_bottom_sheet_background"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-    <LinearLayout
-        style="@style/MaximumContentWidth"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/audio_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_close_black_24dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/audio_big_fab"
+                android:id="@+id/audio_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_margin="16dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/content_description_btn_play_pause"
                 app:backgroundTint="@color/colorPrimary"
                 app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
 
-            <ImageView
-                android:id="@+id/audio_minus_10_sec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toLeftOf="@id/audio_big_fab"
-                android:layout_toStartOf="@id/audio_big_fab"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/content_description_btn_minus_10_sec"
-                android:padding="8dp"
-                app:srcCompat="@drawable/ic_replay_10_black_24dp" />
-
-            <ImageView
-                android:id="@+id/audio_plus_10_sec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toEndOf="@+id/audio_big_fab"
-                android:layout_toRightOf="@+id/audio_big_fab"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/content_description_btn_minus_10_sec"
-                android:padding="8dp"
-                app:srcCompat="@drawable/ic_forward_10_black_24dp" />
-
-
             <TextView
                 android:id="@+id/audio_time_current"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/audio_minus_10_sec"
-                android:layout_toStartOf="@id/audio_minus_10_sec"
+                android:layout_toStartOf="@id/audio_fab"
+                android:layout_toLeftOf="@id/audio_fab"
                 android:text="@string/zeroTime" />
 
             <TextView
                 android:id="@+id/audio_time_max"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/audio_time_max"
-                android:layout_toRightOf="@id/audio_time_max"
+                android:layout_toEndOf="@id/audio_fab"
+                android:layout_toRightOf="@id/audio_fab"
                 android:text="@string/zeroTime" />
+
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>

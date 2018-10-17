@@ -12,6 +12,7 @@ import java.lang.Exception
 open class CalendarFromRawDownloader(private val context: Context,
                                      private val moshi: Moshi) {
 
+    @Suppress("unused")
     open fun loadCalendar(year: Int): EdizioniJson? {
         try {
             val jsonAdapter = moshi.adapter<EdizioniJson>(EdizioniJson::class.java)
