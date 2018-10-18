@@ -32,9 +32,7 @@ class AudioStreamPlayerService : Service() {
 
         fun startStream(audioStream: AudioStream) {
             instance?.let {
-                if (it.isPlaying(audioStream.url)) {
-                    pauseOrUnpauseCurrentStream()
-                } else {
+                if (!it.isPlaying(audioStream.url)) {
                     instance?.start(audioStream)
                 }
             }
@@ -175,10 +173,8 @@ class AudioStreamPlayerService : Service() {
     }
 
     fun stop() {
-        pauseIfCurrentlyPlaying()
-        currentAudioStream?.let {
-            playable.shutdown()
-        }
+        currentAudioStream = null
+        playable.shutdown()
     }
 
     fun pauseOrUnpause() {

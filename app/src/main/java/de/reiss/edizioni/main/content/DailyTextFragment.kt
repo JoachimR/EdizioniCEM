@@ -142,13 +142,9 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
     }
 
     fun setMainHeader() {
-        (activity as? MainActivity)?.let { mainActivity ->
-            viewModel.contentToDisplay()?.let { contentToDisplay ->
-                mainActivity.setHeader(
-                        contentToDisplay.dailyText.date,
-                        contentToDisplay.yearInfo.imageUrl)
-            }
-        }
+        (activity as? MainActivity)?.setHeader(
+                date = date(),
+                imageUrl = viewModel.contentToDisplay()?.yearInfo?.imageUrl)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

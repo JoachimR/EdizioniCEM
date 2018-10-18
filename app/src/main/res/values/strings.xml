@@ -92,4 +92,6 @@
     <string name="error_playing_file">Error playing file</string>
     <string name="notification_button_pause_title">Pause</string>
     <string name="notification_button_play_title">Play</string>
+    <string name="listen">Listen</string>
+    <string name="collaboration">In collaborazione con Radio Risposta Web</string>
 </resources>

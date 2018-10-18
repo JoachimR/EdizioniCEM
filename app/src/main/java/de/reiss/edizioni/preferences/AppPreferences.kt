@@ -38,6 +38,16 @@ class AppPreferences(val context: Context) : OnSharedPreferenceChangeListener {
             || key == str(R.string.pref_widget_showdate_key)
             || key == str(R.string.pref_widget_centered_text_key))
 
+    fun getLastUsedImageUrl(): String? {
+        return preferences.getString("last_used_image_url", null)
+    }
+
+    fun setLastUsedImageUrl(imageUrl: String?) {
+        preferences.change {
+            putString("last_used_image_url", imageUrl)
+        }
+    }
+
     fun fontSize() = prefInt(
             stringRes = R.string.pref_fontsize_key,
             default = Integer.parseInt(str(R.string.pref_fontsize_max)))

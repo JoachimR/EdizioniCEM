@@ -14,19 +14,36 @@
             style="@style/MaximumContentWidth"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="152dp">
+            android:paddingBottom="200dp">
 
-            <ImageView
+            <LinearLayout
                 android:id="@+id/daily_text_audio"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
                 android:background="?attr/selectableItemBackground"
-                app:srcCompat="@drawable/ic_volume_up_black_24dp"
-                android:contentDescription="@string/content_descr_daily_text_audio" />
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@string/content_descr_daily_text_audio"
+                    app:srcCompat="@drawable/ic_volume_up_black_24dp" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/listen" />
+
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.text.format.DateUtils
 import android.view.MenuItem
 import android.view.View
+import de.reiss.edizioni.App
 import de.reiss.edizioni.DaysPositionUtil
 import de.reiss.edizioni.R
 import de.reiss.edizioni.about.AboutActivity
@@ -45,7 +46,7 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        header = Header(this)
+        header = Header(this, App.component.appPreferences)
         initNav()
         refreshFragment()
         initAudioUi()
@@ -81,8 +82,11 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
                 AudioStreamPlayerService.seekToProgressInCurrentStream(progress.toLong())
             }
 
-
         })
+        when (sheetBehavior.state) {
+            STATE_EXPANDED -> showOrHideSeekBar(true)
+            STATE_COLLAPSED -> showOrHideSeekBar(false)
+        }
     }
 
     override fun onStart() {
@@ -143,7 +147,7 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
         }
     }
 
-    fun setHeader(date: Date, imageUrl: String) {
+    fun setHeader(date: Date, imageUrl: String?) {
         header.setNewHeader(date, imageUrl)
     }
 

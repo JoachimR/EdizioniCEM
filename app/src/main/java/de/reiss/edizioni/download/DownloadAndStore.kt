@@ -9,7 +9,6 @@ import de.reiss.edizioni.database.items.text.DevotionItem
 import de.reiss.edizioni.database.items.text.TextItem
 import de.reiss.edizioni.database.items.text.TextItemFull
 import de.reiss.edizioni.downloader.list.CalendarDownloader
-import de.reiss.edizioni.downloader.list.CalendarFromRawDownloader
 import de.reiss.edizioni.downloader.list.EdizioniJson
 import de.reiss.edizioni.downloader.list.EdizioniJsonText
 import de.reiss.edizioni.logger.logInfo
@@ -23,7 +22,6 @@ import java.util.*
 import javax.inject.Inject
 
 open class DownloadAndStore @Inject constructor(private val calendarDownloader: CalendarDownloader,
-                                                private val calendarFromRawDownloader: CalendarFromRawDownloader,
                                                 private val textItemDao: TextItemDao,
                                                 private val textItemDaoFull: TextItemDaoFull,
                                                 private val devotionItemDao: DevotionItemDao,
@@ -64,9 +62,6 @@ open class DownloadAndStore @Inject constructor(private val calendarDownloader: 
 
     @WorkerThread
     private fun downloadAndStoreItems(year: Int): Boolean {
-//        calendarFromRawDownloader.loadCalendar(year)?.let { edizioniJson ->
-//            return downloadAndStore(edizioniJson)
-//        }
         calendarDownloader.downloadCalendar(year)?.let { jsonData ->
             return downloadAndStore(jsonData)
         }
@@ -133,20 +128,16 @@ open class DownloadAndStore @Inject constructor(private val calendarDownloader: 
     private fun insertTextForDate(date: Date, text: EdizioniJsonText) {
         val textItemId = textItemDao.insert(
                 TextItem(date = date.withZeroDayTime(),
-                        verse = dateString(date) + " verse --> " + text.verse,
-                        bibleRef = dateString(date) + " bibleRef --> " + text.bibleRef,
-                        author = dateString(date) + " author --> " + text.author))
+                        verse = text.verse,
+                        bibleRef = text.bibleRef,
+                        author = text.author))
         if (textItemId != -1L) {
-            for ((index, line) in text.devotion.withIndex()) {
+            for (line in text.devotion) {
                 devotionItemDao.insert(
-                        DevotionItem(text = dateString(date) + " devotion #$index --> " + line,
+                        DevotionItem(text = line,
                                 textItemId = textItemId))
             }
         }
     }
 
-    private fun dateString(date : Date): String {
-        val dateFormat = SimpleDateFormat(TEXT_DICTIONARY_KEY_DATE_FORMAT, Locale.getDefault())
-        return """[${dateFormat.format(date)}]"""
-    }
 }

@@ -14,7 +14,6 @@ import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.Toolbar
 import android.view.View
-import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.load.DataSource
@@ -23,10 +22,12 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import de.reiss.edizioni.R
 import de.reiss.edizioni.architecture.GlideApp
+import de.reiss.edizioni.preferences.AppPreferences
 import de.reiss.edizioni.util.extensions.visibleElseGone
 import java.util.*
 
-class Header(private val mainActivity: MainActivity) {
+class Header(private val mainActivity: MainActivity,
+             private val appPreferences: AppPreferences) {
 
     private val viewAppBar: AppBarLayout = mainActivity.findViewById(R.id.main_app_bar)
     private val viewCollapsingToolbarLayout: CollapsingToolbarLayout = mainActivity.findViewById(R.id.collapsing_toolbar_layout)
@@ -39,7 +40,7 @@ class Header(private val mainActivity: MainActivity) {
     private val viewImage: ImageView = mainActivity.findViewById(R.id.collapsing_toolbar_image)
 
     private val headerCalendar = HeaderCalendar(Date())
-    private var currentImageUrl = ""
+    private var currentImageUrl: String? = null
 
     private var isToolbarCollapsed = false
 
@@ -52,7 +53,7 @@ class Header(private val mainActivity: MainActivity) {
         viewAppBar.addOnOffsetChangedListener(ToolbarCollapsedListener())
     }
 
-    fun setNewHeader(date: Date, imageUrl: String) {
+    fun setNewHeader(date: Date, imageUrl: String?) {
         headerCalendar.date = date
         refreshToolbarText()
         refreshCurrentImageAsync(imageUrl)
@@ -72,19 +73,23 @@ class Header(private val mainActivity: MainActivity) {
         }
     }
 
-    private fun refreshCurrentImageAsync(imageUrl: String) {
+    private fun refreshCurrentImageAsync(imageUrl: String?) {
         val urlChanged = currentImageUrl != imageUrl
         if (urlChanged) {
             currentImageUrl = imageUrl
         }
-        if (urlChanged && URLUtil.isValidUrl(currentImageUrl)) {
-            refreshImageAsync(currentImageUrl) {
+        if (urlChanged) {
+            refreshImageAsync(currentImageUrl) { success ->
                 refreshToolbarText()
+                if (success) {
+                    appPreferences.setLastUsedImageUrl(currentImageUrl)
+                }
             }
         }
     }
 
-    private fun refreshImageAsync(validImageUrl: String, onFinish: () -> Unit) {
+    private fun refreshImageAsync(imageUrl: String?, onFinish: (Boolean) -> Unit) {
+        val url: String? = imageUrl ?: appPreferences.getLastUsedImageUrl()
         GlideApp.with(mainActivity)
                 .asBitmap()
                 .listener(object : RequestListener<Bitmap> {
@@ -106,8 +111,7 @@ class Header(private val mainActivity: MainActivity) {
                         return false
                     }
                 })
-//                .load("www.asdasldjaskldj.de/asdasd.jpg")
-                .load(validImageUrl)
+                .load(url)
                 .placeholder(R.drawable.default_banner)
                 .error(R.drawable.default_banner)
                 .into(viewImage)
@@ -116,12 +120,12 @@ class Header(private val mainActivity: MainActivity) {
     fun loadDefaultBanner(): Bitmap =
             BitmapFactory.decodeResource(mainActivity.resources, R.drawable.default_banner)
 
-    fun drawCalendarBackgroundColorAsync(bitmap: Bitmap?, onFinish: () -> Unit) {
+    fun drawCalendarBackgroundColorAsync(bitmap: Bitmap?, onFinish: (Boolean) -> Unit) {
         if (bitmap == null) {
             @Suppress("DEPRECATION")
             viewDateRoot.setBackgroundColor(
                     mainActivity.resources.getColor(android.R.color.transparent))
-            onFinish()
+            onFinish(false)
         } else {
             @Suppress("DEPRECATION")
             val defaultColor = mainActivity.resources.getColor(R.color.colorPrimary)
@@ -131,7 +135,7 @@ class Header(private val mainActivity: MainActivity) {
                             it.getDarkVibrantColor(defaultColor),
                             it.getLightVibrantColor(defaultColor))
                 }
-                onFinish()
+                onFinish(true)
             }
         }
     }
