@@ -11,10 +11,6 @@ open class DailyTextViewModel(private val repository: DailyTextRepository) : Vie
 
     private val contentToDisplayLiveData: MutableLiveData<AsyncLoad<ContentToDisplay>> = MutableLiveData()
 
-    init {
-        println("DailyTextViewModel " + this.toString())
-    }
-
     open fun contentToDisplayLiveData() = contentToDisplayLiveData
 
     open fun loadContentToDisplay(date: Date) {

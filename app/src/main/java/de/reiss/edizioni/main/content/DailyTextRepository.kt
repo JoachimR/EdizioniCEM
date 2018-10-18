@@ -29,9 +29,12 @@ open class DailyTextRepository @Inject constructor(private val executor: Executo
         executor.execute {
             val dailyText = findDailyText(date)
             if (dailyText != null) {
-                val yearInfo = findYearInfo(date, oldData)
+                val year = date.extractYear()
+                val yearInfo = findYearInfo(year, oldData)
                 if (yearInfo != null) {
                     val newData = ContentToDisplay(dailyText = dailyText, yearInfo = yearInfo)
+
+                    appPreferences.setLastUsedYearForYearInfo(year)
                     result.postValue(AsyncLoad.success(newData))
                     return@execute
                 }
@@ -45,9 +48,8 @@ open class DailyTextRepository @Inject constructor(private val executor: Executo
         return if (item != null) dbItemToDailyText(item) else null
     }
 
-    private fun findYearInfo(date: Date,
+    private fun findYearInfo(year: Int,
                              oldData: ContentToDisplay?): YearInfo? {
-        val year = date.extractYear()
         if (year != oldData?.yearInfo?.year) {
             val metaItemFull = metaItemDaoFull.forYear(year)
             if (metaItemFull != null) {

@@ -126,12 +126,11 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
             }
         }
 
-        daily_text_ref1.setOnLongClickListener {
+        daily_text_ref1.onClick {
             context?.let { context ->
                 copyToClipboard(context, daily_text_ref1.text.toString())
                 showShortSnackbar(message = R.string.copied_to_clipboard)
             }
-            true
         }
 
         daily_text_audio.onClick {

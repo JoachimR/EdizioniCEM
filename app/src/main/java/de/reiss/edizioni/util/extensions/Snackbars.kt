@@ -11,80 +11,84 @@ import de.reiss.edizioni.R
 fun Activity.showShortSnackbar(message: String,
                                action: (() -> Unit)? = null,
                                actionLabel: String? = null,
-                               callback: (() -> Unit)? = null) =
+                               callback: (() -> Unit)? = null): Snackbar =
         doShowSnackbar(this, message, Snackbar.LENGTH_SHORT, action, actionLabel, callback)
 
 fun Activity.showLongSnackbar(message: String,
                               action: (() -> Unit)? = null,
                               actionLabel: String? = null,
-                              callback: (() -> Unit)? = null) =
+                              callback: (() -> Unit)? = null): Snackbar =
         doShowSnackbar(this, message, Snackbar.LENGTH_LONG, action, actionLabel, callback)
 
 fun Activity.showIndefiniteSnackbar(message: String,
                                     action: (() -> Unit)? = null,
                                     actionLabel: String? = null,
-                                    callback: (() -> Unit)? = null) =
+                                    callback: (() -> Unit)? = null): Snackbar =
         doShowSnackbar(this, message, Snackbar.LENGTH_INDEFINITE, action, actionLabel, callback)
 
 fun Fragment.showShortSnackbar(message: String,
                                action: (() -> Unit)? = null,
                                actionLabel: String? = null,
-                               callback: (() -> Unit)? = null) {
+                               callback: (() -> Unit)? = null): Snackbar? {
     activity?.let {
-        doShowSnackbar(it, message, Snackbar.LENGTH_SHORT, action, actionLabel, callback)
+        return doShowSnackbar(it, message, Snackbar.LENGTH_SHORT, action, actionLabel, callback)
     }
+    return null
 }
 
 fun Fragment.showLongSnackbar(message: String,
                               action: (() -> Unit)? = null,
                               actionLabel: String? = null,
-                              callback: (() -> Unit)? = null) {
+                              callback: (() -> Unit)? = null): Snackbar? {
     activity?.let {
-        doShowSnackbar(it, message, Snackbar.LENGTH_LONG, action, actionLabel, callback)
+        return doShowSnackbar(it, message, Snackbar.LENGTH_LONG, action, actionLabel, callback)
     }
+    return null
 }
 
 fun Activity.showShortSnackbar(@StringRes message: Int,
                                action: (() -> Unit)? = null,
                                actionLabel: String? = null,
-                               callback: (() -> Unit)? = null) =
+                               callback: (() -> Unit)? = null): Snackbar =
         doShowSnackbar(this, getString(message), Snackbar.LENGTH_SHORT, action, actionLabel, callback)
 
 fun Activity.showLongSnackbar(@StringRes message: Int,
                               action: (() -> Unit)? = null,
                               actionLabel: String? = null,
-                              callback: (() -> Unit)? = null) =
+                              callback: (() -> Unit)? = null): Snackbar =
         doShowSnackbar(this, getString(message), Snackbar.LENGTH_LONG, action, actionLabel, callback)
 
 fun Activity.showIndefiniteSnackbar(@StringRes message: Int,
                                     action: (() -> Unit)? = null,
                                     actionLabel: String? = null,
-                                    callback: (() -> Unit)? = null) =
+                                    callback: (() -> Unit)? = null): Snackbar =
         doShowSnackbar(this, getString(message), Snackbar.LENGTH_INDEFINITE, action, actionLabel, callback)
 
 fun Fragment.showShortSnackbar(@StringRes message: Int,
                                action: (() -> Unit)? = null,
                                actionLabel: String? = null,
-                               callback: (() -> Unit)? = null) = activity?.let {
+                               callback: (() -> Unit)? = null): Snackbar? = activity?.let {
     doShowSnackbar(it, getString(message), Snackbar.LENGTH_SHORT, action, actionLabel, callback)
 }
 
 fun Fragment.showLongSnackbar(@StringRes message: Int,
                               action: (() -> Unit)? = null,
                               actionLabel: String? = null,
-                              callback: (() -> Unit)? = null) {
+                              callback: (() -> Unit)? = null): Snackbar? {
     activity?.let {
-        doShowSnackbar(it, getString(message), Snackbar.LENGTH_LONG, action, actionLabel, callback)
+        return doShowSnackbar(it, getString(message), Snackbar.LENGTH_LONG, action, actionLabel, callback)
     }
+    return null
 }
 
 fun Fragment.showIndefiniteSnackbar(@StringRes message: Int,
                                     action: (() -> Unit)? = null,
                                     actionLabel: String? = null,
-                                    callback: (() -> Unit)? = null) {
+                                    callback: (() -> Unit)? = null): Snackbar? {
     activity?.let {
-        doShowSnackbar(it, getString(message), Snackbar.LENGTH_INDEFINITE, action, actionLabel, callback)
+        return doShowSnackbar(it, getString(message), Snackbar.LENGTH_INDEFINITE, action, actionLabel, callback)
     }
+    return null
 }
 
 
@@ -93,7 +97,7 @@ private fun doShowSnackbar(activity: Activity,
                            duration: Int,
                            action: (() -> Unit)?,
                            actionLabel: String? = null,
-                           callback: (() -> Unit)?) {
+                           callback: (() -> Unit)?): Snackbar {
 
     return Snackbar.make(activity.findViewById(android.R.id.content),
             message,
@@ -101,13 +105,13 @@ private fun doShowSnackbar(activity: Activity,
 
         if (action != null) {
             if (actionLabel == null) {
-                setAction(R.string.snackbar_retry, {
+                setAction(R.string.snackbar_retry) {
                     action()
-                })
+                }
             } else {
-                setAction(actionLabel, {
+                setAction(actionLabel) {
                     action()
-                })
+                }
             }
         }
 
@@ -119,5 +123,7 @@ private fun doShowSnackbar(activity: Activity,
                 }
             })
         }
-    }.show()
+    }.apply {
+        show()
+    }
 }

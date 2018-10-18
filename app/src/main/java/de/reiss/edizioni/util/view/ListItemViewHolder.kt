@@ -5,6 +5,6 @@ import android.view.View
 
 abstract class ListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    abstract fun bindViews(item: StableListItem, isLastItem: Boolean)
+    abstract fun bindViews(item: StableListItem)
 
 }

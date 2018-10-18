@@ -7,10 +7,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
+import android.view.View
 import android.widget.EditText
 import de.reiss.edizioni.R
-import de.reiss.edizioni.model.DailyText
 import de.reiss.edizioni.dailyTextToString
+import de.reiss.edizioni.model.DailyText
 
 class ShareDialog : DialogFragment() {
 
@@ -46,12 +47,23 @@ class ShareDialog : DialogFragment() {
             }
 
     @SuppressLint("InflateParams")
-    private fun createLayout(activity: Activity) =
-            activity.layoutInflater.inflate(R.layout.share_dialog, null).apply {
-                input = findViewById<EditText>(R.id.share_dialog_input).apply {
-                    setText(arguments?.getString(KEY_INITIAL_CONTENT) ?: "")
-                }
+    private fun createLayout(activity: Activity): View? {
+        return activity.layoutInflater.inflate(R.layout.share_dialog, null).apply {
+            input = findViewById<EditText>(R.id.share_dialog_input).apply {
+                setText(createText(activity))
             }
+        }
+    }
+
+    private fun createText(context: Context): String {
+        val initialContent = arguments?.getString(KEY_INITIAL_CONTENT) ?: ""
+        if (initialContent.isEmpty()) {
+            return ""
+        }
+        return context.getString(R.string.share_content,
+                initialContent,
+                context.getString(R.string.copyright))
+    }
 
     private fun shareIntent() = Intent.createChooser(Intent()
             .setAction(Intent.ACTION_SEND)

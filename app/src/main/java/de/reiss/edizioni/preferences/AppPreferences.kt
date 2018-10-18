@@ -13,6 +13,13 @@ import de.reiss.edizioni.util.extensions.change
 import de.reiss.edizioni.widget.triggerWidgetRefresh
 
 class AppPreferences(val context: Context) : OnSharedPreferenceChangeListener {
+    
+    companion object {
+
+        private const val LAST_USED_IMAGE_URL = "LAST_USED_IMAGE_URL"
+        private const val LAST_USED_YEAR_FOR_ABOUT = "LAST_USED_YEAR_FOR_ABOUT"
+        
+    }
 
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -39,12 +46,22 @@ class AppPreferences(val context: Context) : OnSharedPreferenceChangeListener {
             || key == str(R.string.pref_widget_centered_text_key))
 
     fun getLastUsedImageUrl(): String? {
-        return preferences.getString("last_used_image_url", null)
+        return preferences.getString(LAST_USED_IMAGE_URL, null)
     }
 
     fun setLastUsedImageUrl(imageUrl: String?) {
         preferences.change {
-            putString("last_used_image_url", imageUrl)
+            putString(LAST_USED_IMAGE_URL, imageUrl)
+        }
+    }
+
+    fun getLastUsedYearForAbout(): Int {
+        return preferences.getInt(LAST_USED_YEAR_FOR_ABOUT, -1)
+    }
+
+    fun setLastUsedYearForYearInfo(year: Int) {
+        preferences.change {
+            putInt(LAST_USED_YEAR_FOR_ABOUT, year)
         }
     }
 

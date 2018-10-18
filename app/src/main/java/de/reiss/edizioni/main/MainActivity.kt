@@ -177,7 +177,9 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
                 goToSettings()
             }
             R.id.nav_info -> {
-                startActivity(AboutActivity.createIntent(this))
+                if(App.component.appPreferences.getLastUsedYearForAbout() != -1) {
+                    startActivity(AboutActivity.createIntent(this))
+                }
             }
         }
         main_drawer.closeDrawer(GravityCompat.START)

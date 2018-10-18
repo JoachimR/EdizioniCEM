@@ -37,7 +37,7 @@ abstract class StableListItemAdapter : RecyclerView.Adapter<ListItemViewHolder>(
     override fun getItemId(position: Int): Long = getItem(position).stableId()
 
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
-        holder.bindViews(item = getItem(position), isLastItem = position == itemCount - 1)
+        holder.bindViews(item = getItem(position))
     }
 
     override fun getItemCount(): Int = list.size
