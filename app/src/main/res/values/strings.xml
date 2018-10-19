@@ -1,99 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="app_name">Una Parola per Oggi</string>
-    <string name="info_general">The app shows the content created by </string>
-    <string name="source_code_prefix">App Source code:</string>
-    <string name="pref_screen_settings_title">Settings</string>
-    <string name="pref_fontsize_title">Content Font Size</string>
-    <string name="pref_widget_category_title">Widget Settings</string>
-    <string name="pref_widget_showdate_title">Widget Show Date</string>
-    <string name="pref_widget_centered_text_title">Widget Centered Text</string>
-    <string name="pref_widget_backgroundcolor_title">Widget Background</string>
+    <string name="navigation_drawer_open">Apri il cassetto di navigazione</string>
+    <string name="navigation_drawer_close">Chiudere il cassetto di navigazione</string>
+    <string name="info_general">L\'app mostra il contenuto creato da</string>
+    <string name="source_code_prefix">App Codice sorgente:</string>
+    <string name="pref_screen_settings_title">impostazioni</string>
+    <string name="pref_fontsize_title">Dimensione del carattere del contenuto</string>
+    <string name="pref_widget_category_title">Impostazioni widget</string>
+    <string name="pref_widget_showdate_title">Mostra data</string>
+    <string name="pref_widget_centered_text_title">Testo centrato</string>
+    <string name="pref_widget_backgroundcolor_title">sfondo</string>
     <string-array name="pref_widget_backgroundcolor_colors_displayed">
-        <item>None</item>
-        <item>With Black Border</item>
-        <item>White</item>
-        <item>Black</item>
-        <item>Blue</item>
-        <item>Dark Green</item>
-        <item>Green</item>
-        <item>Grey</item>
-        <item>Light Blue</item>
-        <item>Pink</item>
-        <item>Purple</item>
-        <item>Red</item>
-        <item>Yellow</item>
-        <item>Transparent Container</item>
-        <item>Black Container</item>
-        <item>Blue Container</item>
-        <item>Dark Green Container</item>
-        <item>Green Container</item>
-        <item>Grey Container</item>
-        <item>Light Blue Container</item>
-        <item>Pink Container</item>
-        <item>Purple Container</item>
-        <item>Red Container</item>
-        <item>White Container</item>
-        <item>Yellow Container</item>
+        <item>Nessuna</item>
+        <item>Con bordo nero</item>
+        <item>bianca</item>
+        <item>Nero</item>
+        <item>Blu</item>
+        <item>Verde scuro</item>
+        <item>verde</item>
+        <item>Grigio</item>
+        <item>Azzurro</item>
+        <item>Rosa</item>
+        <item>Viola</item>
+        <item>Rosso</item>
+        <item>Giallo</item>
+        <item>Contenitore trasparente</item>
+        <item>Contenitore nero</item>
+        <item>Contenitore blu</item>
+        <item>Contenitore verde scuro</item>
+        <item>Contenitore verde</item>
+        <item>Contenitore grigio</item>
+        <item>Contenitore blu chiaro</item>
+        <item>Contenitore rosa</item>
+        <item>Contenitore viola</item>
+        <item>Contenitore rosso</item>
+        <item>Contenitore bianco</item>
+        <item>Contenitore giallo</item>
     </string-array>
-    <string name="pref_widget_fontcolor_title">Widget Font Color</string>
+    <string name="pref_widget_fontcolor_title">Colore del carattere</string>
     <string-array name="pref_widget_fontcolor_colors_displayed">
-        <item>White</item>
-        <item>Grey</item>
-        <item>Black</item>
-        <item>Blue</item>
-        <item>Red</item>
-        <item>Light Blue</item>
-        <item>Yellow</item>
-        <item>Green</item>
-        <item>Dark Green</item>
-        <item>Purple</item>
-        <item>Pink</item>
+        <item>bianca</item>
+        <item>Grigio</item>
+        <item>Nero</item>
+        <item>Blu</item>
+        <item>Rosso</item>
+        <item>Azzurro</item>
+        <item>Giallo</item>
+        <item>verde</item>
+        <item>Verde scuro</item>
+        <item>Viola</item>
+        <item>Rosa</item>
     </string-array>
-    <string name="pref_widget_fontsize_title">Widget Font Size</string>
-    <string name="nav_info">About</string>
-    <string name="menu_date_pick">Choose Day</string>
-    <string name="menu_share">Share</string>
-    <string name="share_app">Great Android app: %1$s</string>
-    <string name="nav_settings">Settings</string>
-    <string name="app_version">Version %1$s</string>
-    <string name="snackbar_retry">Retry</string>
-    <string name="cd_daily_text_no_content">No content for this date</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="view_pager_loading_content">Loading data</string>
-    <string name="no_content">No content found for this date and translation</string>
-    <string name="no_content_download">Try to download</string>
-    <string name="preferences_title">Settings</string>
-    <string name="cd_main_nav_image">App icon</string>
-    <string name="main_activity_title">@string/app_name</string>
-    <string name="daily_text_change_translation">Change Translation</string>
-    <string name="share_dialog_title">Share</string>
-    <string name="share_dialog_ok">Share</string>
-    <string name="share_dialog_input_hint">Text to share</string>
-    <string name="share_dialog_chooser_title">Share</string>
-    <string name="pref_display_category_title">Display Settings</string>
-    <string name="can_not_write_to_sdcard">Can not write to sd card</string>
-    <string name="cd_widget_background">Widget background</string>
-    <string name="about_title">About</string>
-    <string name="about_share">Share</string>
-    <string name="info_prefix">Info:</string>
-    <string name="share_app_title">Share app</string>
-    <string name="fontsize_dialog_title">Set font size</string>
-    <string name="fontsize_dialog_ok">Done</string>
-    <string name="menu_font_size">Change font size</string>
-    <string name="copied_to_clipboard">Copied to clipboard</string>
-    <string name="content_descr_daily_text_audio">Play audio version</string>
-    <string name="content_description_btn_play_pause">play or pause</string>
-    <string name="error_playing_file">Error playing file</string>
-    <string name="notification_button_pause_title">Pause</string>
-    <string name="notification_button_play_title">Play</string>
-    <string name="listen">Listen</string>
+    <string name="pref_widget_fontsize_title">Dimensione del font</string>
+    <string name="nav_info">Di</string>
+    <string name="menu_date_pick">Scegli il giorno</string>
+    <string name="menu_share">Condividere</string>
+    <string name="share_app">Ottima app per Android: %1$s</string>
+    <string name="nav_settings">Impostazioni</string>
+    <string name="app_version">Versione %1$s</string>
+    <string name="snackbar_retry">Riprova</string>
+    <string name="cd_daily_text_no_content">Nessun contenuto per questa data</string>
+    <string name="dialog_cancel">Annulla</string>
+    <string name="view_pager_loading_content">Caricamento dati</string>
+    <string name="no_content">Nessun contenuto trovato</string>
+    <string name="no_content_download">Prova a scaricare</string>
+    <string name="preferences_title">Impostazioni</string>
+    <string name="cd_main_nav_image">Icona dell\'app</string>
+    <string name="daily_text_change_translation">Cambia traduzione</string>
+    <string name="share_dialog_title">Condividere</string>
+    <string name="share_dialog_ok">Condividere</string>
+    <string name="share_dialog_input_hint">Testo da condividere</string>
+    <string name="share_dialog_chooser_title">Condividere</string>
+    <string name="pref_display_category_title">Impostazioni di visualizzazione</string>
+    <string name="can_not_write_to_sdcard">Non è possibile scrivere su sd card</string>
+    <string name="cd_widget_background">Sfondo del widget</string>
+    <string name="about_title">Di</string>
+    <string name="about_share">Condividere</string>
+    <string name="info_prefix">Informazioni:</string>
+    <string name="share_app_title">Condividi app</string>
+    <string name="fontsize_dialog_title">Imposta la dimensione del carattere</string>
+    <string name="fontsize_dialog_ok">Fatto</string>
+    <string name="menu_font_size">Cambiare la dimensione del font</string>
+    <string name="copied_to_clipboard">Copiato negli appunti</string>
+    <string name="content_descr_daily_text_audio">Riproduci la versione audio</string>
+    <string name="content_description_btn_play_pause">giocare o mettere in pausa</string>
+    <string name="error_playing_file">Errore durante la riproduzione del file</string>
+    <string name="notification_button_pause_title">Pausa</string>
+    <string name="notification_button_play_title">Giocare</string>
+    <string name="listen">Ascolta</string>
     <string name="collaboration">In collaborazione con Radio Risposta Web</string>
-    <string name="about_empty">Could not find any info</string>
-    <string name="copyright">copyright © Edizioni C.E.M.</string>
-    <string name="authors_header">Authors</string>
-    <string name="loading_about_not_successful">Could not load information.</string>
+    <string name="about_empty">Non ho trovato nessuna informazione</string>
+    <string name="authors_header">autori</string>
+    <string name="loading_about_not_successful">Impossibile caricare le informazioni.</string>
 </resources>

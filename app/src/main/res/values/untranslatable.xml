@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Una Parola per Oggi</string>
+    <string name="main_activity_title" translatable="false">@string/app_name</string>
+
+    <string name="copyright" translatable="false">Copyright © Edizioni C.E.M.</string>
+
+    <string name="share_content" translatable="false">%1$s\n\n%2$s</string>
+    <string name="zeroTime" translatable="false">00:00</string>
+
     <string name="play_store_url" translatable="false">https://play.google.com/store/apps/details?id=de.reiss.edizioni</string>
     <string name="info_general_url" translatable="false">http://edizionicem.com/</string>
     <string name="source_code_url" translatable="false">https://github.com/JoachimR/EdizioniCEM</string>
 
-    <string name="share_content" translatable="false">%1$s\n\n%2$s</string>
-    <string name="zeroTime" translatable="false">00:00</string>
 </resources>

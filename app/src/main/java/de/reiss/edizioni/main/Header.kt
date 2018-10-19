@@ -29,6 +29,10 @@ import java.util.*
 class Header(private val mainActivity: MainActivity,
              private val appPreferences: AppPreferences) {
 
+    init {
+        Locale.setDefault(Locale.ITALIAN)
+    }
+
     private val viewAppBar: AppBarLayout = mainActivity.findViewById(R.id.main_app_bar)
     private val viewCollapsingToolbarLayout: CollapsingToolbarLayout = mainActivity.findViewById(R.id.collapsing_toolbar_layout)
     private val viewToolbar: Toolbar = mainActivity.findViewById(R.id.main_toolbar)

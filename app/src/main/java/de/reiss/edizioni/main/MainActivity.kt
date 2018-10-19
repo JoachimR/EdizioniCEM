@@ -59,10 +59,10 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    STATE_EXPANDED -> showOrHideSeekBar(true)
-                    STATE_DRAGGING -> sheetBehavior.state = STATE_EXPANDED
-                    STATE_COLLAPSED -> showOrHideSeekBar(false)
+                if (newState == STATE_DRAGGING) {
+                    sheetBehavior.state = STATE_EXPANDED
+                } else {
+                    updateSeekBarVisibility()
                 }
             }
 
@@ -94,14 +94,7 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
         registerToEventBus()
         updateBottomSheetState()
         updateFab()
-    }
-
-    private fun updateBottomSheetState() {
-        if (AudioStreamPlayerService.isPlayingCurrentStream()) {
-            sheetBehavior.state = STATE_EXPANDED
-        } else {
-            sheetBehavior.state = STATE_COLLAPSED
-        }
+        updateSeekBarVisibility()
     }
 
     override fun onStop() {
@@ -177,7 +170,7 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
                 goToSettings()
             }
             R.id.nav_info -> {
-                if(App.component.appPreferences.getLastUsedYearForAbout() != -1) {
+                if (App.component.appPreferences.getLastUsedYearForAbout() != -1) {
                     startActivity(AboutActivity.createIntent(this))
                 }
             }
@@ -200,6 +193,21 @@ class MainActivity : AppActivity(), NavigationView.OnNavigationItemSelectedListe
 
     private fun goToSettings() {
         startActivity(AppPreferencesActivity.createIntent(this))
+    }
+
+    private fun updateBottomSheetState() {
+        if (AudioStreamPlayerService.isPlayingCurrentStream()) {
+            sheetBehavior.state = STATE_EXPANDED
+        } else {
+            sheetBehavior.state = STATE_COLLAPSED
+        }
+    }
+
+    private fun updateSeekBarVisibility() {
+        when (sheetBehavior.state) {
+            STATE_EXPANDED -> showOrHideSeekBar(true)
+            STATE_COLLAPSED -> showOrHideSeekBar(false)
+        }
     }
 
     private fun showOrHideSeekBar(show: Boolean) {

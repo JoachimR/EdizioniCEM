@@ -20,7 +20,6 @@ import de.reiss.edizioni.events.JsonDownloadRequested
 import de.reiss.edizioni.events.postMessageEvent
 import de.reiss.edizioni.main.MainActivity
 import de.reiss.edizioni.preferences.AppPreferences
-import de.reiss.edizioni.preferences.AppPreferencesActivity
 import de.reiss.edizioni.util.copyToClipboard
 import de.reiss.edizioni.util.extensions.*
 import de.reiss.edizioni.util.htmlize
@@ -118,12 +117,6 @@ class DailyTextFragment : AppFragment<DailyTextViewModel>(R.layout.daily_text) {
         daily_text_try_download.onClick {
             postMessageEvent(JsonDownloadRequested(year = DaysPositionUtil.dayFor(position)
             ))
-        }
-
-        daily_text_change_translation.onClick {
-            activity?.let {
-                it.startActivity(AppPreferencesActivity.createIntent(it))
-            }
         }
 
         daily_text_ref1.onClick {
