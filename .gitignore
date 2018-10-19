@@ -10,3 +10,6 @@
 /build
 /captures
 .externalNativeBuild
+
+apk_signature.properties
+*.key

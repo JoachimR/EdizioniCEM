@@ -19,3 +19,25 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+-dontobfuscate
+
+-dontwarn javax.annotation.**
+
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn retrofit2.**
+
+-keepclassmembers class ** {
+    @com.squareup.moshi.Json *;
+    @com.squareup.moshi.FromJson *;
+    @com.squareup.moshi.ToJson *;
+}
+
+# --- eventbus ---
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }

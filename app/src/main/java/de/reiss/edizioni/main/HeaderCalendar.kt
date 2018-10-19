@@ -18,5 +18,5 @@ data class HeaderCalendar(var date: Date) {
     fun year(): String = formatDate("yyyy")
 
     private fun formatDate(format: String) =
-            SimpleDateFormat(format, Locale.getDefault()).format(date)
+            SimpleDateFormat(format, Locale.ITALIAN).format(date)
 }
